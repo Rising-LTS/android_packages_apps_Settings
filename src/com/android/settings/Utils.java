@@ -1264,6 +1264,7 @@ public final class Utils extends com.android.settingslib.Utils {
             Log.d("getPINPasswordLength", "getLong error: " + e.getMessage());
         }
         return pinLength;
+    }
 
     /**
      * Returns {@code true} if the supplied package is a protected package. Otherwise, returns
