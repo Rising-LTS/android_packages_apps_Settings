@@ -5086,7 +5086,7 @@
     <string name="swipe_up_to_switch_apps_summary" msgid="1415457307836359560">"Untuk beralih aplikasi, geser ke atas pada tombol Layar utama. Untuk melihat semua aplikasi, geser ke atas lagi. Untuk kembali, ketuk tombol kembali."</string>
     <string name="swipe_up_to_switch_apps_suggestion_title" msgid="5754081720589900007">"Coba tombol Layar utama yang baru"</string>
     <string name="swipe_up_to_switch_apps_suggestion_summary" msgid="8885866570559435110">"Aktifkan gestur baru untuk beralih aplikasi"</string>
-    <string name="emergency_settings_preference_title" msgid="6183455153241187148">"Keselamatan &amp; keadaan darurat"</string>
+    <string name="emergency_settings_preference_title" msgid="6183455153241187148">"Keadaan darurat"</string>
     <string name="emergency_dashboard_summary" msgid="401033951074039302">"Darurat SOS, info medis, peringatan"</string>
     <string name="edge_to_edge_navigation_title" msgid="714427081306043819">"Navigasi gestur"</string>
     <string name="edge_to_edge_navigation_summary" msgid="8497033810637690561">"Untuk membuka Layar utama, geser layar dari bawah ke atas. Untuk beralih aplikasi, geser dari bawah ke atas, tahan, lalu lepas. Untuk kembali, geser dari tepi kiri atau kanan."</string>
