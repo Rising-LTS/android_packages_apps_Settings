@@ -21,35 +21,6 @@
     android:title="@string/power_usage_summary_title"
     settings:keywords="@string/keywords_battery">
 
-    <com.android.settingslib.widget.IllustrationPreference
-        android:key="charging_illustration"
-        settings:lottie_rawRes="@raw/charging_illustration"
-        android:order="-999" />
-
-    <com.android.settings.fuelgauge.batteryusage.PowerGaugePreference
-        android:key="designed_battery_capacity"
-        android:title="@string/designed_battery_capacity"
-        android:selectable="false"
-        android:order="-998" />
-
-    <com.android.settings.fuelgauge.batteryusage.PowerGaugePreference
-        android:key="current_battery_capacity"
-        android:title="@string/current_battery_capacity"
-        android:selectable="false"
-        android:order="-997" />
-
-    <com.android.settings.fuelgauge.batteryusage.PowerGaugePreference
-        android:key="battery_charge_cycles"
-        android:title="@string/battery_charge_cycles"
-        android:selectable="false"
-        android:order="-996" />
-
-    <com.android.settings.fuelgauge.batteryusage.PowerGaugePreference
-        android:key="battery_temperature"
-        android:title="@string/battery_temperature"
-        android:selectable="false"
-        android:order="-995" />
-
     <com.android.settingslib.widget.UsageProgressBarPreference
         android:key="battery_header"
         android:title="@string/summary_placeholder"
@@ -84,6 +55,40 @@
         android:summary="@string/sys_adaptive_charging_summary"
         settings:position="middle"
         android:defaultValue="true" />
+
+    <com.android.settingslib.widget.IllustrationPreference
+        android:key="charging_illustration"
+        settings:lottie_rawRes="@raw/charging_illustration"
+        settings:position="middle"
+        android:order="-999" />
+
+    <com.android.settings.fuelgauge.batteryusage.PowerGaugePreference
+        android:key="designed_battery_capacity"
+        android:title="@string/designed_battery_capacity"
+        android:selectable="false"
+        settings:position="middle"
+        android:order="-998" />
+
+    <com.android.settings.fuelgauge.batteryusage.PowerGaugePreference
+        android:key="current_battery_capacity"
+        android:title="@string/current_battery_capacity"
+        android:selectable="false"
+        settings:position="middle"
+        android:order="-997" />
+
+    <com.android.settings.fuelgauge.batteryusage.PowerGaugePreference
+        android:key="battery_charge_cycles"
+        android:title="@string/battery_charge_cycles"
+        android:selectable="false"
+        settings:position="middle"
+        android:order="-996" />
+
+    <com.android.settings.fuelgauge.batteryusage.PowerGaugePreference
+        android:key="battery_temperature"
+        android:title="@string/battery_temperature"
+        android:selectable="false"
+        settings:position="middle"
+        android:order="-995" />
 
     <com.rising.settings.preferences.SystemSettingSwitchPreference
         android:key="battery_24_hrs_stats"
