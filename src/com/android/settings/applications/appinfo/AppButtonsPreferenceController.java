@@ -52,7 +52,6 @@ import com.android.settings.R;
 import com.android.settings.SettingsActivity;
 import com.android.settings.Utils;
 import com.android.settings.applications.ApplicationFeatureProvider;
-import com.android.settings.applications.appinfo.AppInfoDashboardFragment;
 import com.android.settings.applications.specialaccess.deviceadmin.DeviceAdminAdd;
 import com.android.settings.core.BasePreferenceController;
 import com.android.settings.core.InstrumentedPreferenceFragment;
@@ -250,21 +249,13 @@ public class AppButtonsPreferenceController extends BasePreferenceController imp
                     } else {
                         showDialogInner(ButtonActionDialogFragment.DialogType.DISABLE);
                     }
-                } else if (mAppEntry.info.enabled) {
-                    requireAuthAndExecute(() -> {
-                        mMetricsFeatureProvider.action(
-                                mActivity,
-                                SettingsEnums.ACTION_SETTINGS_DISABLE_APP,
-                                getPackageNameForMetric());
-                        AsyncTask.execute(new DisableChangerRunnable(mPm,
-                                mAppEntry.info.packageName,
-                                PackageManager.COMPONENT_ENABLED_STATE_DEFAULT));
-                    });
                 } else {
                     mMetricsFeatureProvider.action(
                             mActivity,
-                            SettingsEnums.ACTION_SETTINGS_ENABLE_APP,
-                            getPackageNameForMetric());
+                            mAppEntry.info.enabled
+                                    ? SettingsEnums.ACTION_SETTINGS_DISABLE_APP
+                                    : SettingsEnums.ACTION_SETTINGS_ENABLE_APP,
+                                    getPackageNameForMetric());
                     AsyncTask.execute(new DisableChangerRunnable(mPm, mAppEntry.info.packageName,
                             PackageManager.COMPONENT_ENABLED_STATE_DEFAULT));
                 }
@@ -312,28 +303,13 @@ public class AppButtonsPreferenceController extends BasePreferenceController imp
         }
     }
 
-    /**
-     * Runs the given action with restricted lock authentication if it is a protected package.
-     *
-     * @param action The action to run.
-     */
-    private void requireAuthAndExecute(Runnable action) {
-        if (Utils.isProtectedPackage(mContext, mAppEntry.info.packageName)) {
-            AppInfoDashboardFragment.showLockScreen(mContext, () -> action.run());
-        } else {
-            action.run();
-        }
-    }
-
     public void handleDialogClick(int id) {
         switch (id) {
             case ButtonActionDialogFragment.DialogType.DISABLE:
-                requireAuthAndExecute(() -> {
-                    mMetricsFeatureProvider.action(mActivity,
-                            SettingsEnums.ACTION_SETTINGS_DISABLE_APP);
-                    AsyncTask.execute(new DisableChangerRunnable(mPm, mAppEntry.info.packageName,
-                            PackageManager.COMPONENT_ENABLED_STATE_DISABLED_USER));
-                });
+                mMetricsFeatureProvider.action(mActivity,
+                        SettingsEnums.ACTION_SETTINGS_DISABLE_APP);
+                AsyncTask.execute(new DisableChangerRunnable(mPm, mAppEntry.info.packageName,
+                        PackageManager.COMPONENT_ENABLED_STATE_DISABLED_USER));
                 break;
             case ButtonActionDialogFragment.DialogType.SPECIAL_DISABLE:
                 mMetricsFeatureProvider.action(mActivity,
@@ -341,9 +317,7 @@ public class AppButtonsPreferenceController extends BasePreferenceController imp
                 uninstallPkg(mAppEntry.info.packageName, false, true);
                 break;
             case ButtonActionDialogFragment.DialogType.FORCE_STOP:
-                requireAuthAndExecute(() -> {
-                    forceStopPackage(mAppEntry.info.packageName);
-                });
+                forceStopPackage(mAppEntry.info.packageName);
                 break;
         }
     }
@@ -573,18 +547,16 @@ public class AppButtonsPreferenceController extends BasePreferenceController imp
 
     @VisibleForTesting
     void uninstallPkg(String packageName, boolean allUsers, boolean andDisable) {
-        requireAuthAndExecute(() -> {
-            stopListeningToPackageRemove();
-            // Create new intent to launch Uninstaller activity
-            Uri packageUri = Uri.parse("package:" + packageName);
-            Intent uninstallIntent = new Intent(Intent.ACTION_UNINSTALL_PACKAGE, packageUri);
-            uninstallIntent.putExtra(Intent.EXTRA_UNINSTALL_ALL_USERS, allUsers);
+        stopListeningToPackageRemove();
+        // Create new intent to launch Uninstaller activity
+        Uri packageUri = Uri.parse("package:" + packageName);
+        Intent uninstallIntent = new Intent(Intent.ACTION_UNINSTALL_PACKAGE, packageUri);
+        uninstallIntent.putExtra(Intent.EXTRA_UNINSTALL_ALL_USERS, allUsers);
 
-            mMetricsFeatureProvider.action(
-                    mActivity, SettingsEnums.ACTION_SETTINGS_UNINSTALL_APP);
-            mFragment.startActivityForResult(uninstallIntent, mRequestUninstall);
-            mDisableAfterUninstall = andDisable;
-        });
+        mMetricsFeatureProvider.action(
+                mActivity, SettingsEnums.ACTION_SETTINGS_UNINSTALL_APP);
+        mFragment.startActivityForResult(uninstallIntent, mRequestUninstall);
+        mDisableAfterUninstall = andDisable;
     }
 
     @VisibleForTesting
